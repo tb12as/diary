@@ -57,19 +57,19 @@
 				success: (data) => {
 					$('#diaries').children().remove();
 					$.each(data, function(index, val) {
-						$('#diaries').append(`<div class="col-md-3 my-2">
-							<div class="card">
-							<div class="card-header">
-							<h5 class="card-title">${val.title}</h5>
-							</div>
-							<div class="card-body" style="max-height: 100px; overflow: hidden;">
-							${val.content}
-							</div>
-							<div class="card-footer">
-							<button class="btn btn-danger btn-sm" data-id="${val.id}" id="delete">Delete</button>
-							<button class="btn btn-warning btn-sm" data-id="${val.id}" id="edit">Edit</button>
-							</div>	
-							</div>
+						let string = `<div class="card">
+						<div class="card-body">
+						<h4 class="card-title">${val.title}</h4>
+						<h6 class="card-subtitle mb-2 text-muted">${val.created_at}</h6>
+						<p class="card-text" style="max-height: 50px; overflow: hidden;">${val.content}</p>
+						<hr>
+						<button class="btn btn-danger btn-sm" data-id="${val.id}" id="delete">Delete</button>
+						<button class="btn btn-success btn-sm" data-id="${val.id}" id="edit">Edit</button>
+						</div>
+						</div>`;
+
+						$('#diaries').append(`<div class="col-md-4 my-2">
+							${string}
 							</div>`);
 					});
 
