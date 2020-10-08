@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DiaryRequest;
+use App\Http\Resources\DiaryRecourse;
 use App\Models\Diary;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -29,7 +30,7 @@ class DiaryController extends Controller
     {
         if ($request->ajax()) {
             $data = Diary::where('user_id', $this->user_id())->get();
-            return response()->json($data);
+            return DiaryRecourse::collection($data);
         }
         return view('diary.index');
     }

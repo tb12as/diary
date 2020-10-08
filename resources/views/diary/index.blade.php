@@ -3,7 +3,7 @@
 @section('content')
 
 <div class="container">
-	<button class="btn btn-primary btn-sm float-right" id="addDiary">New Diary</button>
+	<button class="btn btn-primary btn-sm float-right" id="addDiary">New Diary</button> <br>
 	<div class="row my-2" id="diaries">
 
 	</div>
@@ -56,12 +56,12 @@
 				type: 'GET',
 				success: (data) => {
 					$('#diaries').children().remove();
-					$.each(data, function(index, val) {
+					$.each(data.data, function(index, val) {
 						let string = `<div class="card">
 						<div class="card-body">
 						<h4 class="card-title">${val.title}</h4>
-						<h6 class="card-subtitle mb-2 text-muted">${val.created_at}</h6>
-						<p class="card-text" style="max-height: 50px; overflow: hidden;">${val.content}</p>
+						<h6 class="card-subtitle mb-2 text-muted small">${(val.updated_at ? val.updated_at : val.created_at)}</h6>
+						<p class="card-text" style="max-height: 50px; overflow: hidden; background: -webkit-linear-gradient(white, transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${val.content}</p>
 						<hr>
 						<button class="btn btn-danger btn-sm" data-id="${val.id}" id="delete">Delete</button>
 						<button class="btn btn-success btn-sm" data-id="${val.id}" id="edit">Edit</button>
