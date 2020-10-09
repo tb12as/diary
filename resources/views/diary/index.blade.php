@@ -37,6 +37,27 @@
 			</form>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
+</div>
+
+<div class="modal fade" id="confirmDelete">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="modalDeleteTitle">Delete diary?</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p class="alert alert-danger" id="deleteMessage"></p>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-sm btn-primary" id="deleteNow">Delete</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 @endsection
@@ -51,6 +72,7 @@
 		});
 
 		function loadData() {
+			$('.loading').removeClass('false');
 			$.ajax({
 				url: '{{ route('diary.index') }}',
 				type: 'GET',
@@ -72,6 +94,12 @@
 							${string}
 							</div>`);
 					});
+					if(data.data.length < 1) {
+						$('#diaries').append(`<div class="col-md-12 my-2">
+							<h4 class="text-muted">You don't have any diary yet</h4>
+							</div>`);
+					}
+					$('.loading').addClass('false');
 
 				}, 
 				error: (res) => {
@@ -105,9 +133,43 @@
 						$('#errorList').append('<li class="text-danger error-list list-unstyled"><strong>'+v+'</strong></li>');
 					});
 				}
-			});
-			
+			});		
 		});
+
+		// Delete Diary
+		$('body').on('click', '#delete', function() {
+			event.preventDefault();
+			let diary_id = $(this).attr('data-id');
+			$.ajax({
+				url: '{{ route('diary.index') }}/'+diary_id,
+				success: (data) => {
+					$('#deleteNow').val(data.data.id);
+					$('#confirmDelete').modal('show');
+					$('#modalDeleteTitle').html('Delete diary '+data.data.title+'?');
+					$('#deleteMessage').html('This action cannot be undone');
+				},
+				error: (res) => {
+					console.log(res);	
+				}
+			});
+		});
+
+		$('#deleteNow').click(function(event) {
+			event.preventDefault();
+			let diary_id = $(this).val();
+			$.ajax({
+				url: '{{ route('diary.index') }}/'+diary_id,
+				method: 'delete',
+				success: (data) => {
+					$('#confirmDelete').modal('hide');
+					loadData();
+				},
+				error: (res) => {
+					console.log(res);	
+				}
+			});
+		});
+
 		
 	});
 </script>

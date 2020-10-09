@@ -15,6 +15,7 @@ class DiaryRecourse extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
             'created_at' => 'Created at '.date('d M Y', strtotime($this->created_at)). ', '.$this->created_at->diffForHumans(),

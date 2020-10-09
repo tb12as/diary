@@ -16,9 +16,27 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/bootstrap-dark.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     {{-- <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet"> --}}
 </head>
 <body>
+    <div class="loading">
+        <div class="tengah">
+            <div class="spinner-border text-primary" role="status" style="animation-duration: 1s; padding: 20px;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="tengah">
+            <div class="spinner-border text-success" role="status" style="animation-duration: 1.5s; padding: 40px;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <div class="tengah">
+            <div class="spinner-border text-danger" role="status" style="animation-duration: 2s; padding: 60px;">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+    </div>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark text-light shadow-sm">
             <div class="container">

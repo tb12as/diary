@@ -45,9 +45,11 @@ class DiaryController extends Controller
         return response()->json($data);
     }
 
-    public function show(Diary $diary)
+    public function show($id, Request $request)
     {
-        return $diary;
+        if ($request->ajax()) {
+            return new DiaryRecourse(Diary::findOrFail($id));
+        }
     }
 
     public function destroy($id)
