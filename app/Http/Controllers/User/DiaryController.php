@@ -50,6 +50,7 @@ class DiaryController extends Controller
         if ($request->ajax()) {
             return new DiaryRecourse(Diary::findOrFail($id));
         }
+        return abort(404);
     }
 
     public function destroy($id)
