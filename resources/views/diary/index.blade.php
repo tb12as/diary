@@ -2,6 +2,24 @@
 
 @section('content')
 
+<div class="loading">
+	<div class="tengah">
+		<div class="spinner-border text-primary" role="status" style="animation-duration: 1s; padding: 20px;">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+	<div class="tengah">
+		<div class="spinner-border text-success" role="status" style="animation-duration: 1.5s; padding: 40px;">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+	<div class="tengah">
+		<div class="spinner-border text-danger" role="status" style="animation-duration: 2s; padding: 60px;">
+			<span class="sr-only">Loading...</span>
+		</div>
+	</div>
+</div>
+
 <div class="container">
 	<button class="btn btn-primary btn-sm float-right" id="addDiary">New Diary</button> <br>
 	<div class="row my-2" id="diaries">
