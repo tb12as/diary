@@ -13,6 +13,10 @@ $('#diaryForm').submit(function(event) {
 		success: (data) => {
 			$('#modalNewDiary').modal('hide');
 			$('#diaryForm').trigger('reset');
+			$('.snackbar-added').addClass('true');
+			setTimeout(() => {
+				$('.snackbar-added').removeClass('true');
+			}, 1500);
 			loadData();
 		},
 		error: (res) => {

@@ -18,3 +18,10 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div>
+
+<div class="snackbar">
+	<div class="alert alert-danger px-5" role="alert">
+		<strong>Diary deleted</strong>
+	</div>
+</div>
+

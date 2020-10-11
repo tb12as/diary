@@ -1,5 +1,5 @@
 function loadData() {
-	$('.loading').removeClass('false');
+	// $('.loading').removeClass('false');
 	$.ajax({
 		url: '{{ route('diary.index') }}',
 		type: 'GET',
@@ -8,9 +8,11 @@ function loadData() {
 			$.each(data.data, function(index, val) {
 				let string = `<div class="card">
 				<div class="card-body">
+				<div class="diary-card" data-id="${val.id}">
 				<h4 class="card-title">${val.title}</h4>
 				<h6 class="card-subtitle mb-2 text-muted small">${(val.updated_at ? val.updated_at : val.created_at)}</h6>
 				<p class="card-text" style="max-height: 50px; overflow: hidden; background: -webkit-linear-gradient(white, transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">${val.content}</p>
+				</div>
 				<hr>
 				<button class="btn btn-danger btn-sm" data-id="${val.id}" id="delete">Delete</button>
 				<button class="btn btn-success btn-sm" value="${val.id}" id="editBtn">Edit</button>

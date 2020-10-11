@@ -23,6 +23,10 @@ $('#deleteNow').click(function(event) {
 		method: 'delete',
 		success: (data) => {
 			$('#confirmDelete').modal('hide');
+			$('.snackbar').addClass('true');
+			setTimeout(() => {
+				$('.snackbar').removeClass('true');
+			}, 1500);
 			loadData();
 		},
 		error: (res) => {

@@ -27,3 +27,9 @@
 		</div>
 	</div>
 </div>
+
+<div class="snackbar-edit">
+	<div class="alert alert-success px-5" role="alert">
+		<strong>Diary edited</strong>
+	</div>
+</div>

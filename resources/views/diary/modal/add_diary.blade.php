@@ -27,3 +27,9 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal-dialog -->
 </div>
+
+<div class="snackbar-added">
+	<div class="alert alert-primary px-5" role="alert">
+		<strong>Diary saved</strong>
+	</div>
+</div>

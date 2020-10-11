@@ -26,6 +26,10 @@ $('#diaryEditForm').submit(function(event) {
 		success: (data) => {
 			$('#diaryEditForm').trigger('reset');
 			$('#modalEditDiary').modal('hide');
+			$('.snackbar-edit').addClass('true');
+			setTimeout(() => {
+				$('.snackbar-edit').removeClass('true');
+			}, 1500);
 			loadData();
 		},
 		error: (res) => {console.log(res)},

@@ -20,3 +20,55 @@
 	visibility: hidden;
 	opacity: 0;
 }
+
+/* Diary Card */
+.diary-card {
+	transition: .5s;
+}
+
+.diary-card::after{
+	content: 'Click for detail';
+	position: absolute;
+	top: 0;
+	right: 0;
+	background: #375a7f;
+	color: whitesmoke;
+	padding: 4px 9px;
+	border-radius: 5px;
+	border-bottom-right-radius: 0;
+	font-size: 13px;
+	opacity: 0;
+	visibility: hidden;
+	transition: .5s;
+}
+
+.diary-card:hover {
+	cursor: pointer;
+}
+
+.diary-card:hover.diary-card::after{
+	opacity: 1;
+	visibility: visible;
+}
+
+/* Snackbar delete */
+.snackbar, .snackbar-edit, .snackbar-added{
+	position: absolute;
+	bottom: 25px;
+	left: 5%;
+	transition: .5s;
+	visibility: hidden;
+	opacity: 0;
+	transform: translate(-30px, 0);
+}
+
+.snackbar.true,
+.snackbar-edit.true,
+.snackbar-added.true
+{
+	visibility: visible;
+	opacity: 1;
+	transform: translate(0, 0);
+}
+
+
