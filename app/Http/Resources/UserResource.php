@@ -19,7 +19,8 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'level' => $this->level,
-            'created_at' => $this->created_at,
+            'created_at' => date('d M Y', strtotime($this->created_at)),
+            'created_when' => $this->created_at->diffForHumans(),
         ];
     }
 }
