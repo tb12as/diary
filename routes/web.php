@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\UserManagement;
 use App\Http\Controllers\User\DiaryController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware('auth')->group(function() {
 	Route::resource('diary', DiaryController::class)->except(['edit', 'update', 'create', 'show']);
 	Route::get('diary/{diary}', [DiaryController::class, 'show'])->name('diary.show')->middleware('isOwner');
+
+	Route::middleware('isAdmin')->prefix('admin')->group(function() {
+		Route::get('user', [UserManagement::class, 'index'])->name('userman.index');
+	});
 });
