@@ -1,0 +1,33 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Http\Request;
+
+class UserManagementController extends Controller
+{
+    public function index(Request $request)
+    {
+    	if ($request->ajax()) {
+           $data = User::where('level', 2)->latest()->get();
+           return UserResource::collection($data);
+       }
+
+       return view('admin.user_management');
+    }
+
+    public function show($id)
+    {
+    	return User::findOrFail($id);
+    }
+
+    public function destroy($id)
+    {
+    	$user = User::findOrFail($id);
+    	$user->delete();
+    	return new UserResource($user);
+    }
+}
