@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Admin\UserManagement;
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\User\DiaryController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,6 +28,8 @@ Route::middleware('auth')->group(function() {
 	Route::get('diary/{diary}', [DiaryController::class, 'show'])->name('diary.show')->middleware('isOwner');
 
 	Route::middleware('isAdmin')->prefix('admin')->group(function() {
-		Route::get('user', [UserManagement::class, 'index'])->name('userman.index');
+		Route::get('user', [UserManagementController::class, 'index'])->name('userman.index');
+		Route::get('user/{user}', [UserManagementController::class, 'show'])->name('userman.show');
+		Route::put('user/{user}', [UserManagementController::class, 'destroy'])->name('userman.destroy');
 	});
 });

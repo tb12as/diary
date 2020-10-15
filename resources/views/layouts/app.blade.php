@@ -51,9 +51,12 @@
                         @else
                         @if (Auth::user()->level === 1)
                         <li class="nav-item">
-                            <a class="nav-link" href="">User Management</a>
+                            <a class="nav-link @yield('userman')" href="{{ route('userman.index') }}">User Management</a>
                         </li>
                         @endif
+                        <li class="nav-item">
+                            <a class="nav-link @yield('diary')" href="{{ route('diary.index') }}">Diary</a>
+                        </li>
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}

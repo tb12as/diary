@@ -1,5 +1,6 @@
 @extends('layouts.app')
 
+@section('diary', 'active')
 @section('content')
 
 @include('layouts.loading')
