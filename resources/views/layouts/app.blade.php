@@ -53,6 +53,9 @@
                         <li class="nav-item">
                             <a class="nav-link @yield('userman')" href="{{ route('userman.index') }}">User Management</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link @yield('adminman')" href="{{ route('adminman.index') }}">Admin Management</a>
+                        </li>
                         @endif
                         <li class="nav-item">
                             <a class="nav-link @yield('diary')" href="{{ route('diary.index') }}">Diary</a>

@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class UserResource extends JsonResource
 {
@@ -22,6 +23,7 @@ class UserResource extends JsonResource
             'created_at' => date('d M Y', strtotime($this->created_at)),
             'created_when' => $this->created_at->diffForHumans(),
             'diaries_count' => $this->diaries_count,
+            'login_now' => (Auth::id() == $this->id ? true : false),
         ];
     }
 }
