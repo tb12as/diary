@@ -9,25 +9,25 @@ use Illuminate\Http\Request;
 
 class UserManagementController extends Controller
 {
-    public function index(Request $request)
-    {
-    	if ($request->ajax()) {
-           $data = User::where('level', 2)->latest()->get();
-           return UserResource::collection($data);
-       }
-
-       return view('admin.user_management');
+  public function index(Request $request)
+  {
+    if ($request->ajax()) {
+      $data = User::where('level', 2)->withCount('diaries')->latest()->get();
+      return UserResource::collection($data);
     }
 
-    public function show($id)
-    {
-    	return User::findOrFail($id);
-    }
+    return view('admin.user_management');
+  }
 
-    public function destroy($id)
-    {
-    	$user = User::findOrFail($id);
-    	$user->delete();
-    	return new UserResource($user);
-    }
+  public function show($id)
+  {
+    return User::findOrFail($id);
+  }
+
+  public function destroy($id)
+  {
+    $user = User::findOrFail($id);
+    $user->delete();
+    return new UserResource($user);
+  }
 }

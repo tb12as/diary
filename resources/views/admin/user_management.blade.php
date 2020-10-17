@@ -13,6 +13,7 @@
 				<th>Name</th>
 				<th>Email</th>
 				<th>Created At</th>
+				<th>Diaries Count</th>
 				<th width="200">Action</th>
 			</tr>
 		</thead>
@@ -66,6 +67,7 @@
 							<td>${val.name}</td>
 							<td>${val.email}</td>
 							<td>${val.created_at}, ${val.created_when}</td>
+							<td>${val.diaries_count}</td>
 							<td>
 							<button class="btn btn-danger btn-sm" id="deleteUser" value="${val.id}">Delete</button>
 							{{-- <button class="btn btn-success btn-sm" id="editUser" value="${val.id}">Edit</button>  --}}

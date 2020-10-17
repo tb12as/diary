@@ -21,6 +21,7 @@ class UserResource extends JsonResource
             'level' => $this->level,
             'created_at' => date('d M Y', strtotime($this->created_at)),
             'created_when' => $this->created_at->diffForHumans(),
+            'diaries_count' => $this->diaries_count,
         ];
     }
 }
