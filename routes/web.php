@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\AdminManagementController;
 use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\User\DiaryController;
+use App\Http\Controllers\User\SettingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::middleware('auth')->group(function() {
 	Route::resource('diary', DiaryController::class)->except(['edit', 'update', 'create', 'show']);
 	Route::get('diary/{diary}', [DiaryController::class, 'show'])->name('diary.show')->middleware('isOwner');
+
+	Route::get('setting', [SettingController::class, 'index'])->name('settings');
+	Route::post('setting', [SettingController::class, 'save'])->name('settings.save');
 
 	Route::middleware('isAdmin')->prefix('admin')->group(function() {
 		Route::get('user', [UserManagementController::class, 'index'])->name('userman.index');
