@@ -27,11 +27,11 @@ class AdminManagementController extends Controller
 	}
 	public function store(AdminRequest $request)
 	{
-		$data = User::create([
+		$data = User::updateOrCreate(['id' => $request->admin_id], [
 			'name' => $request->name,
             'email' => $request->email,
             'level' => 1,
-            'password' => bcrypt($request->password),
+            'password' => $request->password ? bcrypt($request->password) : User::find($request->admin_id)->password,
 		]);
 
 		return Response::json([

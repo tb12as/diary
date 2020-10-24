@@ -75,6 +75,37 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="modalEditAdmin">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title">Edit Admin</h4>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+					<span class="sr-only">Close</span>
+				</button>
+			</div>
+			<form action="{{ route('adminman.store') }}" method="post" id="editAdminForm">
+				<div class="modal-body">
+					<ul id="errorListEdit"></ul>
+					<input type="hidden" name="admin_id" id="admin_id">
+					<label for="name">Name</label>
+					<input type="text" class="form-control" id="nameEdit" name="name" placeholder="Name">
+
+					<label for="email">Email</label>
+					<input type="text" class="form-control" id="emailEdit" name="email" placeholder="Email">
+
+					<label for="password">Password</label>
+					<input type="password" class="form-control" id="passwordEdit" name="password" placeholder="Password">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-sm btn-success">Save Change</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>
 @endsection
 
 @section('script')
@@ -102,9 +133,8 @@
 							<td>${val.created_at}, ${val.created_when}</td>
 							<td>${val.diaries_count}</td>
 							<td>
-							${(val.login_now ? '<p class="badge badge-success">Now Login</p>' : '')}
-							<button class="btn btn-danger btn-sm ${(val.login_now ? 'd-none' : '')}" id="deleteAdmin" value="${val.id}">Delete</button>
-							{{-- <button class="btn btn-success btn-sm" id="editUser" value="${val.id}">Edit</button>  --}}
+							${(val.login_now ? '<p class="badge badge-success">Now Login</p>' : `<button class="btn btn-danger btn-sm" id="deleteAdmin" value="${val.id}">Delete</button>
+							<button class="btn btn-success btn-sm" id="editAdmin" value="${val.id}">Edit</button>`)}
 							</td>
 							</tr>`);
 					});
@@ -124,7 +154,7 @@
 			$.ajax({
 				url: '{{ route('adminman.index') }}/'+user_id,
 				success: (res) => {
-					console.log(res);
+					// console.log(res);
 					$('#deleteNow').val(res.id);
 					$('#modalDeleteTitle').html(`Delete admin ${res.name}?`);
 					$('#modalDeleteAdmin').modal('show');
@@ -156,7 +186,7 @@
 			$('#modalAddAdmin').modal('show');
 		});
 
-		$('#addAdminForm').submit(function(event) {
+		$('form').submit(function(event) {
 			event.preventDefault();
 			let admin_data = $(this).serialize();
 			$.ajax({
@@ -164,21 +194,52 @@
 				type: 'post',
 				data: admin_data,
 				success: (res) => {
-					$('#modalAddAdmin').modal('hide');
+					// $('#modalAddAdmin').modal('hide');
+					$('.modal').modal('hide');
 					$('#addAdminForm').trigger('reset');
+					$('#editAdminForm').trigger('reset');
+
+					$('.elli').remove();
+					$('.err-lst').remove();
 					loadData();
 				}, 
 				error: (err) => {
 					console.log(err);
 					if(err.responseJSON.errors) {
 						let errors = err.responseJSON.errors;
+						// create
 						$('.elli').remove();
 						$.each(errors, function(index, val) {
 							$('#errorList').append(`<li class="text-danger elli"><strong>${val}</strong></li>`);
 						});
+						// update
+						$('.err-lst').remove();
+						$.each(err.responseJSON.errors, function(index, val) {
+							$('#errorListEdit').append(`<li class="text-danger err-lst"><strong>${val}</strong></li>`);
+						});
 					}
 				}
 			});
+		});
+
+		$('body').on('click', '#editAdmin', function(event) {
+			event.preventDefault();
+			$.ajax({
+				url: '{{ route('adminman.index') }}/'+this.value,
+				success: (res) => {
+					$('#editAdminForm').trigger('reset');
+					$('#admin_id').val(res.id);
+					$('#nameEdit').val(res.name);
+					$('#emailEdit').val(res.email);
+					$('#modalEditAdmin').modal('show');
+
+					$('.err-lst').remove();
+				},
+				error: (err) => {
+					console.log(err);
+				}
+			});
+			
 		});
 		
 	});

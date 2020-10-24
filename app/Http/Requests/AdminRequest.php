@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Request;
 
 class AdminRequest extends FormRequest
 {
@@ -21,12 +22,20 @@ class AdminRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
-        return [
-            'name' => 'required|min:3',
-            'email' => 'required|unique:users|email',
-            'password' => 'required',
-        ];
+        if ($request->admin_id) { // update
+            return [
+                'name' => 'required|min:3',
+                'email' => 'required|email',
+                'password' => $request->password ? 'min:4' : '',
+            ];    
+        } else {
+            return [
+                'name' => 'required|min:3',
+                'email' => 'required|unique:users|email',
+                'password' => 'required|min:4',
+            ];
+        }
     }
 }
