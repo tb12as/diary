@@ -13,8 +13,7 @@
 				<th width="50">No</th>
 				<th>Name</th>
 				<th>Email</th>
-				<th>Created At</th>
-				<th>Diaries Count</th>
+				<th>Diaries</th>
 				<th width="200">Action</th>
 			</tr>
 		</thead>
@@ -34,7 +33,9 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<p class="alert alert-danger">This action cannot be undone</p>
+				<p class="alert alert-danger">This action c@include('layouts.loading')
+					$('.loading').removeClass('false');
+				$('.loading').addClass('false');annot be undone</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
@@ -106,6 +107,13 @@
 		</div>
 	</div>
 </div>
+
+<div class="snackbar">
+	<div class="alert alert-success px-5" role="alert">
+		<strong id="snackbarMessage"></strong>
+	</div>
+</div>
+
 @endsection
 
 @section('script')
@@ -117,8 +125,10 @@
 			}
 		});
 
-		function loadData() {
-			$('.loading').removeClass('false');
+		function loadData(withLoading) {
+			if(withLoading) {
+				$('.loading').removeClass('false');
+			}
 			$('#tableBody').children().remove();
 			$.ajax({
 				url: '{{ route('adminman.index') }}',
@@ -128,13 +138,15 @@
 					$.each(data, function(index, val) {
 						$('#tableBody').append(`<tr>
 							<td>${index + 1}</td>
-							<td>${val.name}</td>
+							<td>${val.name} <span class="badge badge-dark">${val.created_at}, ${val.created_when}</span></td>
 							<td>${val.email}</td>
-							<td>${val.created_at}, ${val.created_when}</td>
 							<td>${val.diaries_count}</td>
 							<td>
-							${(val.login_now ? '<p class="badge badge-success">Now Login</p>' : `<button class="btn btn-danger btn-sm" id="deleteAdmin" value="${val.id}">Delete</button>
-							<button class="btn btn-success btn-sm" id="editAdmin" value="${val.id}">Edit</button>`)}
+							${(val.login_now ? '<p class="badge badge-success">Now Login</p>' : `
+								<button class="btn btn-danger btn-sm" id="deleteAdmin" value="${val.id}">Delete</button>
+								<button class="btn btn-success btn-sm" id="editAdmin" value="${val.id}">Edit</button>
+								<button class="btn btn-warning btn-sm" id="toUser" value="${val.id}">To User</button>
+								`)}
 							</td>
 							</tr>`);
 					});
@@ -201,7 +213,7 @@
 
 					$('.elli').remove();
 					$('.err-lst').remove();
-					loadData();
+					loadData(true);
 				}, 
 				error: (err) => {
 					console.log(err);
@@ -242,6 +254,27 @@
 			
 		});
 		
+		$('body').on('click', '#toUser', function(event) {
+			event.preventDefault();
+			let adminToUser_id = this.value;
+			$.ajax({
+				url: '{{ route('adminman.touser') }}',
+				type: 'POST',
+				data: {id: adminToUser_id},
+				success: (res) => {
+					$('#snackbarMessage').html('Role updated!');
+					$('.snackbar').addClass('true');
+					setTimeout(() => {
+						$('.snackbar').removeClass('true');
+					},1500);
+					loadData(false);
+				},
+				error: (err) => {
+					console.log(err);
+				}
+			});
+			
+		});
 	});
 </script>
 @endsection

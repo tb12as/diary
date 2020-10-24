@@ -47,4 +47,16 @@ class AdminManagementController extends Controller
 			'done' => true,
 		], 200);
 	}
+
+	public function toUser(Request $request)
+	{
+		$id = $request->id;
+		$user = User::findOrFail($id);
+		$user->level = 2;
+		$user->save();
+
+		return Response::json([
+			'done' => true,
+		], 200);
+	}
 }

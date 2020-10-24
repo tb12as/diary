@@ -42,5 +42,6 @@ Route::middleware('auth')->group(function() {
 		Route::post('admin', [AdminManagementController::class, 'store'])->name('adminman.store');
 		Route::get('admin/{id}', [AdminManagementController::class, 'show'])->name('adminman.show');
 		Route::put('admin/{id}', [AdminManagementController::class, 'destroy'])->name('adminman.destroy');
+		Route::post('to-user', [AdminManagementController::class, 'toUser'])->name('adminman.touser');
 	});
 });
