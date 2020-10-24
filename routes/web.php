@@ -36,6 +36,7 @@ Route::middleware('auth')->group(function() {
 		Route::get('user', [UserManagementController::class, 'index'])->name('userman.index');
 		Route::get('user/{user}', [UserManagementController::class, 'show'])->name('userman.show');
 		Route::put('user/{user}', [UserManagementController::class, 'destroy'])->name('userman.destroy');
+		Route::post('to-admin', [UserManagementController::class, 'toAdmin'])->name('userman.toadmin');
 		// admin
 		Route::get('admin', [AdminManagementController::class, 'index'])->name('adminman.index');
 		Route::post('admin', [AdminManagementController::class, 'store'])->name('adminman.store');

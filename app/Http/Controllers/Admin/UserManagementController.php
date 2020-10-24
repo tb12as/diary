@@ -30,4 +30,13 @@ class UserManagementController extends Controller
     $user->delete();
     return new UserResource($user);
   }
+
+  public function toAdmin(Request $request)
+  {
+    $id = $request->id;
+    $user = User::findOrFail($id);
+    $user->level = 1;
+    $user->save();
+    return new UserResource($user);
+  }
 }

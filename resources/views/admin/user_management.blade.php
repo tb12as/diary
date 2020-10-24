@@ -12,9 +12,8 @@
 				<th width="50">No</th>
 				<th>Name</th>
 				<th>Email</th>
-				<th>Created At</th>
-				<th>Diaries Count</th>
-				<th width="200">Action</th>
+				<th>Diaries</th>
+				<th width="250">Action</th>
 			</tr>
 		</thead>
 		<tbody id="tableBody">
@@ -64,12 +63,12 @@
 					$.each(data, function(index, val) {
 						$('#tableBody').append(`<tr>
 							<td>${index + 1}</td>
-							<td>${val.name}</td>
+							<td>${val.name} <span class="badge badge-success">${val.created_at}, ${val.created_when}</span></td>
 							<td>${val.email}</td>
-							<td>${val.created_at}, ${val.created_when}</td>
 							<td>${val.diaries_count}</td>
 							<td>
-							<button class="btn btn-danger btn-sm" id="deleteUser" value="${val.id}">Delete</button>
+							<button class="btn btn-danger btn-sm" id="deleteUser" value="${val.id}">Delete</button> 
+							<button class="btn btn-success btn-sm" id="toAdmin" value="${val.id}">Change to admin</button>
 							{{-- <button class="btn btn-success btn-sm" id="editUser" value="${val.id}">Edit</button>  --}}
 							</td>
 							</tr>`);
@@ -114,6 +113,23 @@
 					console.log(err);
 				}
 			});
+		});
+
+		$('body').on('click', '#toAdmin', function(event) {
+			event.preventDefault();
+			let id = this.value;
+			$.ajax({
+				url: '{{ route('userman.toadmin') }}',
+				type: 'POST',
+				data: {id: id},
+				success: (res) => {
+					loadData();
+				}, 
+				error: (err) => {
+					console.log(err);
+				}
+			});
+			
 		});
 		
 	});
