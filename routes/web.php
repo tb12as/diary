@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
 });
 
 Auth::routes();
@@ -29,8 +29,12 @@ Route::middleware('auth')->group(function() {
 	Route::resource('diary', DiaryController::class)->except(['edit', 'update', 'create', 'show']);
 	Route::get('diary/{diary}', [DiaryController::class, 'show'])->name('diary.show')->middleware('isOwner');
 
-	Route::get('setting', [SettingController::class, 'index'])->name('settings');
-	Route::post('setting', [SettingController::class, 'save'])->name('settings.save');
+	Route::prefix('setting')->group(function() {
+		Route::get('/', [SettingController::class, 'index'])->name('settings');
+		Route::post('/', [SettingController::class, 'save'])->name('settings.save');
+		Route::post('/profile-pic-save', [SettingController::class, 'saveProfilePic'])->name('setting.updatePhotoProfile');
+		Route::put('/profile-pic-delete', [SettingController::class, 'deleteProfilePic'])->name('setting.deletePhotoProfile');
+	});
 
 	Route::middleware('isAdmin')->prefix('admin')->group(function() {
 		Route::get('user', [UserManagementController::class, 'index'])->name('userman.index');

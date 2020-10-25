@@ -36,15 +36,39 @@
         </div>
         <div class="col-md-6">
             <h4>User Profile Picture</h4>
+            <ul id="errorProfile"></ul>
             <p class="text-muted">Change Profile Picture</p>
-            <img src="{{ Auth::user()->image_name ?? 'https://ui-avatars.com/api/?background=303030&color=fff&name='.Auth::user()->name.'&size=240' }}" alt="{{ Auth::user()->name }}" class="rounded-circle">
+            <div class="d-flex justify-content-center">
+                <img src="{{ Auth::user()->profile_pic ? asset('profile_images').'/'.Auth::user()->profile_pic : 'https://ui-avatars.com/api/?background=303030&color=fff&name='.Auth::user()->name.'&size=240' }}" alt="{{ Auth::user()->name }}" class="rounded-circle my-4 w-50" id="profileImagePreview">
+            </div>
+            <form action="{{ route('setting.updatePhotoProfile') }}" id="updatePhotoProfileForm" enctype="multipart/form-data">
+                <div class="custom-file my-2">
+                    <input type="file" class="custom-file-input" id="profileImage" name="profile_img">
+                    <label class="custom-file-label" for="profileImage">Profile Image</label>
+                </div>
+
+                <div class="form-group d-flex justify-content-between">
+                    <button class="btn btn-danger btn-sm {{ Auth::user()->profile_pic ?? 'd-none' }}" id="removeProfile">Remove Profile Picture</button>
+                    <button type="submit" class="btn btn-primary btn-sm float-right">Update Profile Picture</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
 
-<div class="snackbar">
+<div class="snackbar snackbar-ff">
     <div class="alert alert-success px-5" role="alert">
         <strong>Setting Updated</strong>
+    </div>
+</div>
+<div class="snackbar snackbar-profile-image">
+    <div class="alert alert-success px-5" role="alert">
+        <strong>Profile Picture Updated!</strong>
+    </div>
+</div>
+<div class="snackbar snackbar-profile-image-delete">
+    <div class="alert alert-danger px-5" role="alert">
+        <strong>Profile Picture Deleted!</strong>
     </div>
 </div>
 @endsection
@@ -101,13 +125,13 @@
                 success: (res) => {
                     $('.error-list').remove();
                     $('input[name="name"]').val(res.name);
-                    
+
                     if(res.change_password) {
                         cencelChangePassword();
                     }
-                    $('.snackbar').addClass('true');
+                    $('.snackbar-ff').addClass('true');
                     setTimeout(() => {
-                        $('.snackbar').removeClass('true');
+                        $('.snackbar-ff').removeClass('true');
                     }, 1500);
                 }, 
                 error: (err) => {
@@ -124,6 +148,81 @@
             
         });
 
-    });
+        function changeImagePreview(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function(e) {
+                    $('#profileImagePreview').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        $('#profileImage').change(function(event) {
+            event.preventDefault();
+            changeImagePreview(this);
+            if (this.files && this.files[0]) {
+                $(this).next('label').html(this.files[0].name);
+            } else {
+                $(this).next('label').html('No file choosen');
+            }
+        });
+
+        $('#updatePhotoProfileForm').submit(function(event) {
+            event.preventDefault();
+            let data = new FormData(this);
+
+            $.ajax({
+                url: '{{ route('setting.updatePhotoProfile') }}',
+                type: 'POST',
+                data: data,
+                async: false,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: (res) => {
+                    $('.error-list').remove();
+                    $('#updatePhotoProfile').trigger('reset');
+                    $('#profileImage').next('label').html('Profile Image');
+                    $('#profileImagePreview').attr('src', '{{ asset('profile_images') }}/'+res.fileName);
+                    $('.snackbar-profile-image').addClass('true');
+                    setTimeout(() => {
+                        $('.snackbar-profile-image').removeClass('true');
+                    }, 2000);
+                    $('#removeProfile').removeClass('d-none');
+                },
+                error: (err) => {
+                    console.log(err);
+                    if (err.responseJSON.errors) {
+                        $('.error-list').remove();
+                        $.each(err.responseJSON.errors, function(i, v) {
+                            $('#errorProfile').append(`<li class="text-danger font-weight-bold error-list">${v}</li>`);
+                        });
+                    }
+                }
+            }); 
+        });
+
+        $('#removeProfile').click((e) => {
+            e.preventDefault();
+            $.ajax({
+                url: '{{ route('setting.deletePhotoProfile') }}',
+                type: 'PUT',
+                success: (res) => {
+                    $('#profileImagePreview').attr('src', 'https://ui-avatars.com/api/?background=303030&color=fff&name={{ Auth::user()->name }}&size=240');
+                    $('.snackbar-profile-image-delete').addClass('true');
+                    setTimeout(() => {
+                        $('.snackbar-profile-image-delete').removeClass('true');
+                    }, 2000);
+                    $('#removeProfile').addClass('d-none');
+                },
+                error: (e) => {
+                    console.log(e);
+                }
+            });
+        })
+    }); // ready 
 </script>
 @endsection
